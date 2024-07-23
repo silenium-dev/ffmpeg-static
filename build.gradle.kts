@@ -23,7 +23,7 @@ val compileNative by tasks.registering(Exec::class) {
     commandLine(
         "bash",
         layout.projectDirectory.file("cppbuild.sh").asFile.absolutePath,
-//            "-extension", "-gpl", // TODO: Enable later
+        "-extension", findProperty("native.extension") as String? ?: "",
         "install",
     )
     workingDir(layout.projectDirectory.asFile)
@@ -41,6 +41,7 @@ val compileNative by tasks.registering(Exec::class) {
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/include"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/lib"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/share"))
+    outputs.cacheIf { true }
 }
 
 tasks.build {
@@ -66,7 +67,7 @@ publishing {
     }
 
     repositories {
-        maven(System.getenv("REPOSILITE_URL") ?: "https://reposilite.silenium.dev/private") {
+        maven(System.getenv("REPOSILITE_URL") ?: "https://reposilite.silenium.dev/snapshots") {
             name = "reposilite"
             credentials {
                 username =

@@ -17,6 +17,8 @@ env:
   CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
   CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
   STAGING_REPOSITORY: ${{ secrets.STAGING_REPOSITORY }}
+permissions:
+  contents: write
 jobs:
 #  android-arm:
 #    runs-on: ubuntu-20.04
@@ -25,13 +27,13 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
-  android-arm64:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
+#  android-arm64:
+#    runs-on: ubuntu-20.04
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
 #  android-x86:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -39,13 +41,13 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
-  android-x86_64:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
+#  android-x86_64:
+#    runs-on: ubuntu-20.04
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
 #  linux-armhf:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -53,20 +55,20 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
-  linux-arm64:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
-  linux-ppc64le:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
+#  linux-arm64:
+#    runs-on: ubuntu-20.04
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
+#  linux-ppc64le:
+#    runs-on: ubuntu-20.04
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
 #  linux-x86:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -81,20 +83,20 @@ jobs:
         ext: ["", -gpl]
     steps:
       - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@actions
-  macosx-arm64:
-    runs-on: macos-12
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-macosx@actions
-  macosx-x86_64:
-    runs-on: macos-12
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-macosx@actions
+#  macosx-arm64:
+#    runs-on: macos-12
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-macosx@actions
+#  macosx-x86_64:
+#    runs-on: macos-12
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-macosx@actions
 #  windows-x86:
 #    runs-on: windows-2019
 #    strategy:
@@ -102,16 +104,16 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: bytedeco/javacpp-presets/.github/actions/deploy-windows@actions
-  windows-x86_64:
-    runs-on: windows-2019
-    strategy:
-      matrix:
-        ext: ["", -gpl]
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/deploy-windows@actions
-  redeploy:
+#  windows-x86_64:
+#    runs-on: windows-2019
+#    strategy:
+#      matrix:
+#        ext: ["", -gpl]
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/deploy-windows@actions
+#  redeploy:
 #    needs: [android-arm, android-arm64, android-x86, android-x86_64, linux-armhf, linux-arm64, linux-ppc64le, linux-x86, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86, windows-x86_64]
-    needs: [android-arm64, android-x86_64, linux-arm64, linux-ppc64le, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86_64]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: bytedeco/javacpp-presets/.github/actions/redeploy@actions
+#    needs: [android-arm64, android-x86_64, linux-arm64, linux-ppc64le, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86_64]
+#    runs-on: ubuntu-20.04
+#    steps:
+#      - uses: bytedeco/javacpp-presets/.github/actions/redeploy@actions
