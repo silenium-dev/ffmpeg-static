@@ -38,11 +38,8 @@ val compileNative by tasks.registering(Exec::class) {
     inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
     inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
     inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/bin"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/include"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/lib"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/share"))
-    outputs.upToDateWhen { false }
+    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}"))
+    outputs.cacheIf { true }
 }
 
 tasks.build {
