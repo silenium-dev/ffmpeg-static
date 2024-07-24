@@ -48,18 +48,17 @@ tasks.build {
 
 val bundleJar by tasks.registering(Jar::class) {
     from(compileNative.get().outputs.files) {
-        include("*.so")
-        include("*.dll")
-        include("*.dylib")
+        include("lib/*.so")
+        include("lib/*.dll")
+        include("lib/*.dylib")
+        eachFile {
+            path = "natives/$platform/${this.name}"
+        }
         into("natives/$platform/")
     }
 }
 
 val zipBuild by tasks.registering(Zip::class) {
-    doFirst {
-        val dir = compileDir.asFile
-        dir.list()?.forEach(::println)
-    }
     from(compileNative.get().outputs.files) {
         include("bin/**")
         include("include/**")
