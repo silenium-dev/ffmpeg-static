@@ -1,15 +1,7 @@
 name: ffmpeg
 on:
   push:
-    paths:
-      - ffmpeg/**
-      - .github/workflows/ffmpeg.yml
-      - .github/actions/**
   pull_request:
-    paths:
-      - ffmpeg/**
-      - .github/workflows/ffmpeg.yml
-      - .github/actions/**
   workflow_dispatch:
 env:
   CI_DEPLOY_NEED_GCC: 1
