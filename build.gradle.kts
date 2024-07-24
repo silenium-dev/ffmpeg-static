@@ -64,6 +64,9 @@ val zipBuild by tasks.registering(Zip::class) {
         include("include/**/*")
         include("lib/**/*")
         include("share/**/*")
+        eachFile {
+            println(path)
+        }
     }
 }
 
