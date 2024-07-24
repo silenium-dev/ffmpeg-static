@@ -11,6 +11,9 @@ env:
   CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
   CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
   STAGING_REPOSITORY: ${{ secrets.STAGING_REPOSITORY }}
+  REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
+  REPOSILITE_PASSWORD: ${{ secrets.REPOSILITE_PASSWORD }}
+  REPOSILITE_URL: "https://reposilite.silenium.dev/snaphots"
 permissions:
   contents: write
 jobs:
@@ -87,9 +90,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
         with:
-          reposilite-url: "https://reposilite.silenium.dev/snaphots"
-          reposilite-username: ${{ secrets.REPOSILITE_USERNAME }}
-          reposilite-password: ${{ secrets.REPOSILITE_PASSWORD }}
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 #  macosx-arm64:
 #    runs-on: macos-12
