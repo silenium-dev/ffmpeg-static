@@ -21,13 +21,15 @@ exec {
 }.assertNormalExitValue()
 val platform: String = platformTxt.get().asFile.readText().trim()
 
-val compileDir = layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}")
+val platformExtension = findProperty("native.extension") as String? ?: ""
+
+val compileDir = layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}${platformExtension}")
 
 val compileNative by tasks.registering(Exec::class) {
     commandLine(
         "bash",
         layout.projectDirectory.file("cppbuild.sh").asFile.absolutePath,
-        "-extension", findProperty("native.extension") as String? ?: "",
+        "-extension", platformExtension,
         "install",
     )
     workingDir(layout.projectDirectory.asFile)
@@ -38,7 +40,7 @@ val compileNative by tasks.registering(Exec::class) {
     inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
     inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
     inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}"))
+    outputs.dir(compileDir)
     outputs.cacheIf { true }
 }
 
