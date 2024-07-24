@@ -29,7 +29,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  android-arm64:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -37,7 +37,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  android-x86:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -45,7 +45,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  android-x86_64:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -53,7 +53,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  linux-armhf:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -61,7 +61,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  linux-arm64:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -69,7 +69,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  linux-ppc64le:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -77,7 +77,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
 #  linux-x86:
 #    runs-on: ubuntu-20.04
 #    strategy:
@@ -85,7 +85,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu@actions
+#      - uses: ./.github/actions/deploy-ubuntu
   linux-x86_64:
     runs-on: ubuntu-20.04
     strategy:
@@ -93,7 +93,7 @@ jobs:
         ext: ["", -gpl]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/deploy-ubuntu@actions
+      - uses: ./.github/actions/deploy-ubuntu
 #  macosx-arm64:
 #    runs-on: macos-12
 #    strategy:
@@ -101,7 +101,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-macosx@actions
+#      - uses: ./.github/actions/deploy-macosx
 #  macosx-x86_64:
 #    runs-on: macos-12
 #    strategy:
@@ -109,7 +109,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-macosx@actions
+#      - uses: ./.github/actions/deploy-macosx
 #  windows-x86:
 #    runs-on: windows-2019
 #    strategy:
@@ -117,7 +117,7 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-windows@actions
+#      - uses: ./.github/actions/deploy-windows
 #  windows-x86_64:
 #    runs-on: windows-2019
 #    strategy:
@@ -125,11 +125,11 @@ jobs:
 #        ext: ["", -gpl]
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-windows@actions
+#      - uses: ./.github/actions/deploy-windows
 #  redeploy:
 #    needs: [android-arm, android-arm64, android-x86, android-x86_64, linux-armhf, linux-arm64, linux-ppc64le, linux-x86, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86, windows-x86_64]
 #    needs: [android-arm64, android-x86_64, linux-arm64, linux-ppc64le, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86_64]
 #    runs-on: ubuntu-20.04
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/redeploy@actions
+#      - uses: ./.github/actions/redeploy
