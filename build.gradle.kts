@@ -74,7 +74,7 @@ publishing {
         create<MavenPublication>("native${platform.split("-").joinToString("") { it.capitalized() }}") {
             artifact(bundleJar)
             artifact(zipBuild)
-            artifactId = "ffmpeg-natives-${platform}"
+            artifactId = "ffmpeg-natives-${platform}${platformExtension}"
         }
     }
 
