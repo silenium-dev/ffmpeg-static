@@ -56,6 +56,10 @@ val bundleJar by tasks.registering(Jar::class) {
 }
 
 val zipBuild by tasks.registering(Zip::class) {
+    doFirst {
+        val dir = compileDir.asFile
+        dir.list()?.forEach(::println)
+    }
     from(compileNative.get().outputs.files) {
         include("bin/**")
         include("include/**")
