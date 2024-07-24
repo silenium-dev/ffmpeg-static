@@ -1,6 +1,8 @@
 name: ffmpeg
 on:
   push:
+    tags-ignore:
+      - '*'
   pull_request:
   workflow_dispatch:
   release:
