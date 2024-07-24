@@ -71,6 +71,7 @@ val debug by tasks.registering {
 }
 
 val zipBuild by tasks.registering(Zip::class) {
+    dependsOn(debug)
     from(compileNative.get().outputs.files) {
         include("bin/**/*")
         include("include/**/*")
