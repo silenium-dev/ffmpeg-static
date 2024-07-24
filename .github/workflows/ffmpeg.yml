@@ -94,6 +94,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
+        with:
+          gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 #  macosx-arm64:
 #    runs-on: macos-12
 #    strategy:

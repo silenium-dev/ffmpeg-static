@@ -1,4 +1,8 @@
 name: Deploy on Ubuntu
+inputs:
+  gradle-cache-encryption-key:
+    description: 'The encryption key for the Gradle cache.'
+    required: false
 runs:
   using: composite
   steps:
@@ -294,7 +298,7 @@ runs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+        cache-encryption-key: ${{ inputs.gradle-cache-encryption-key }}
         gradle-home-cache-cleanup: true
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
