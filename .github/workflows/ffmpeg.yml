@@ -3,6 +3,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  release:
+    types: [ published ]
 env:
   CI_DEPLOY_NEED_GCC: 1
   CI_DEPLOY_MODULE: ${{ github.workflow }}
@@ -13,79 +15,80 @@ env:
   STAGING_REPOSITORY: ${{ secrets.STAGING_REPOSITORY }}
   REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
   REPOSILITE_PASSWORD: ${{ secrets.REPOSILITE_PASSWORD }}
-  REPOSILITE_URL: "https://reposilite.silenium.dev/snapshots"
+  # deploy to snapshots if not a release
+  REPOSILITE_URL: ${{ github.event_name == 'release' && 'https://reposilite.silenium.dev/releases' || 'https://reposilite.silenium.dev/snapshots' }}
 permissions:
   contents: write
 jobs:
-#  android-arm:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  android-arm64:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  android-x86:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  android-x86_64:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  linux-armhf:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  linux-arm64:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  linux-ppc64le:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
-#  linux-x86:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        ext: ["", -gpl]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-ubuntu
+  #  android-arm:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  android-arm64:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  android-x86:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  android-x86_64:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  linux-armhf:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  linux-arm64:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  linux-ppc64le:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
+  #  linux-x86:
+  #    runs-on: ubuntu-20.04
+  #    strategy:
+  #      matrix:
+  #        ext: ["", -gpl]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-ubuntu
   linux-x86_64:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        ext: ["", -gpl]
+        ext: [ "", -gpl ]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
