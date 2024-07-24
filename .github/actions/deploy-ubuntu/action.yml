@@ -309,7 +309,6 @@ runs:
       with:
         cache-encryption-key: ${{ inputs.gradle-cache-encryption-key }}
         gradle-home-cache-cleanup: true
-        cache-write-only: true
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
         build-scan-terms-of-use-agree: "yes"
@@ -317,4 +316,4 @@ runs:
 
     - name: Build with Gradle
       shell: bash
-      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --configure-on-demand --parallel
+      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --configure-on-demand --parallel --build-cache

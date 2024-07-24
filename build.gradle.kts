@@ -60,28 +60,12 @@ val bundleJar by tasks.registering(Jar::class) {
     }
 }
 
-val debug by tasks.registering {
-    dependsOn(compileNative)
-    doFirst {
-        compileNative.get().outputs.files.forEach {
-            println("Output: $it")
-        }
-        compileDir.asFile.list()?.forEach {
-            println("File: $it")
-        }
-    }
-}
-
 val zipBuild by tasks.registering(Zip::class) {
-    dependsOn(debug)
     from(compileNative.get().outputs.files) {
         include("bin/**/*")
         include("include/**/*")
         include("lib/**/*")
         include("share/**/*")
-        eachFile {
-            println(path)
-        }
     }
 }
 
