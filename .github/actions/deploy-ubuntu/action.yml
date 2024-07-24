@@ -314,6 +314,12 @@ runs:
         build-scan-terms-of-use-agree: "yes"
         add-job-summary-as-pr-comment: on-failure
 
-    - name: Build with Gradle
+    - name: Publish release
       shell: bash
+      if: "github.event_name == 'release'"
+      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
+
+    - name: Publish snapshot
+      shell: bash
+      if: "github.event_name != 'release'"
       run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --configure-on-demand --parallel --build-cache
