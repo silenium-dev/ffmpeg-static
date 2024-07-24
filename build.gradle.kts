@@ -1,5 +1,4 @@
 import org.gradle.internal.extensions.stdlib.capitalized
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
 
 plugins {
     base
@@ -43,7 +42,7 @@ val compileNative by tasks.registering(Exec::class) {
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/include"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/lib"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/share"))
-    outputs.cacheIf { true }
+    outputs.upToDateWhen { false }
 }
 
 tasks.build {
