@@ -291,7 +291,6 @@ runs:
         echo "GPG_PASSPHRASE=***" >> $GITHUB_ENV
         echo "GRADLE_TASK=$GRADLE_TASK" >> $GITHUB_ENV
 
-    - uses: actions/checkout@v4
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
