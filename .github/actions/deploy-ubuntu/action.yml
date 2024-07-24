@@ -3,6 +3,15 @@ inputs:
   gradle-cache-encryption-key:
     description: 'The encryption key for the Gradle cache.'
     required: false
+  reposilite-username:
+    description: 'The username for the Reposilite repository.'
+    required: false
+  reposilite-password:
+    description: 'The password for the Reposilite repository.'
+    required: false
+  reposilite-url:
+    description: 'The URL for the Reposilite repository.'
+    required: false
 runs:
   using: composite
   steps:
@@ -307,4 +316,8 @@ runs:
 
     - name: Build with Gradle
       shell: bash
+      env:
+        REPOSILITE_USERNAME: ${{ inputs.reposilite-username }}
+        REPOSILITE_PASSWORD: ${{ inputs.reposilite-password }}
+        REPOSILITE_URL: ${{ inputs.reposilite-url }}
       run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --build-cache --configure-on-demand --parallel
