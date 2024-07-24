@@ -316,4 +316,4 @@ runs:
 
     - name: Build with Gradle
       shell: bash
-      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --configure-on-demand --parallel
+      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --build-cache --configure-on-demand --parallel
