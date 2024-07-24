@@ -20,8 +20,8 @@ exec {
     workingDir(layout.projectDirectory.asFile)
 }.assertNormalExitValue()
 val platform: String = platformTxt.get().asFile.readText().trim()
-
 val platformExtension = findProperty("native.extension") as String? ?: ""
+logger.lifecycle("Building for platform: $platform${platformExtension}")
 
 val compileDir = layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}${platformExtension}")
 
@@ -35,7 +35,6 @@ val compileNative by tasks.registering(Exec::class) {
     workingDir(layout.projectDirectory.asFile)
     environment("PROJECTS" to "ffmpeg")
 
-    project.logger.lifecycle("Building for platform: $platform")
     inputs.property("platform", platform)
     inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
     inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
