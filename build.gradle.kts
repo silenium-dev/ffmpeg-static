@@ -56,8 +56,7 @@ val bundleJar by tasks.registering(Jar::class) {
 }
 
 val zipBuild by tasks.registering(Zip::class) {
-    dependsOn(compileNative)
-    from(compileDir) {
+    from(compileNative.get().outputs.files) {
         include("bin/**")
         include("include/**")
         include("lib/**")
