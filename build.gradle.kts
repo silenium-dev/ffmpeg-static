@@ -57,6 +57,7 @@ val bundleJar by tasks.registering(Jar::class) {
         include("*.dylib")
         into("natives/$platform/")
     }
+    archiveClassifier = platform
 }
 
 val zipBuild by tasks.registering(Zip::class) {
@@ -67,6 +68,7 @@ val zipBuild by tasks.registering(Zip::class) {
         include("lib/**")
         include("share/**")
     }
+    archiveClassifier = platform
 }
 
 publishing {
@@ -74,7 +76,7 @@ publishing {
         create<MavenPublication>("native${platform.split("-").joinToString("") { it.capitalized() }}") {
             artifact(bundleJar)
             artifact(zipBuild)
-            artifactId = "ffmpeg-${platform}"
+            artifactId = "ffmpeg-natives"
         }
     }
 
