@@ -298,7 +298,7 @@ runs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        cache-encryption-key: ${{ inputs.gradle-cache-encryption-key }}
+#        cache-encryption-key: ${{ inputs.gradle-cache-encryption-key }}
         gradle-home-cache-cleanup: true
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
@@ -307,4 +307,4 @@ runs:
 
     - name: Build with Gradle
       shell: bash
-      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --build-cache --configure-on-demand --configuration-cache --parallel
+      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --build-cache --configure-on-demand --parallel
