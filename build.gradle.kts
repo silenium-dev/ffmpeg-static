@@ -1,5 +1,5 @@
 import org.gradle.internal.extensions.stdlib.capitalized
-import kotlin.io.path.createDirectories
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
 
 plugins {
     base
@@ -22,6 +22,8 @@ exec {
 }.assertNormalExitValue()
 val platform: String = platformTxt.get().asFile.readText().trim()
 
+val compileDir = layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}")
+
 val compileNative by tasks.registering(Exec::class) {
     commandLine(
         "bash",
@@ -33,14 +35,10 @@ val compileNative by tasks.registering(Exec::class) {
     environment("PROJECTS" to "ffmpeg")
 
     project.logger.lifecycle("Building for platform: $platform")
-    outputs.files(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/lib").asFileTree.filter {
-        it.name.contains(".so") || it.name.contains(".dll") || it.name.contains(".dylib")
-    })
     inputs.property("platform", platform)
     inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
     inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
     inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/bin"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/include"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/lib"))
     outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}/share"))
@@ -51,20 +49,30 @@ tasks.build {
     dependsOn(compileNative)
 }
 
-val bundleSharedLibs by tasks.registering(Jar::class) {
-    from(compileNative.map { it.outputs.files })
-    into("natives/")
-    rename {
-        val base = it.substringBefore(".")
-        val ext = it.substringAfter(".")
-        "$base-$platform.$ext"
+val bundleJar by tasks.registering(Jar::class) {
+    from(compileNative.get().outputs.files) {
+        include("*.so")
+        include("*.dll")
+        include("*.dylib")
+        into("natives/$platform/")
+    }
+}
+
+val zipBuild by tasks.registering(Zip::class) {
+    dependsOn(compileNative)
+    from(compileDir) {
+        include("bin/**")
+        include("include/**")
+        include("lib/**")
+        include("share/**")
     }
 }
 
 publishing {
     publications {
         create<MavenPublication>("native${platform.split("-").joinToString("") { it.capitalized() }}") {
-            artifact(bundleSharedLibs)
+            artifact(bundleJar)
+            artifact(zipBuild)
             artifactId = "ffmpeg-${platform}"
         }
     }
