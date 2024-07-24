@@ -1,4 +1,5 @@
 import org.gradle.internal.extensions.stdlib.capitalized
+import kotlin.io.path.createDirectories
 
 plugins {
     base
@@ -8,7 +9,9 @@ plugins {
 group = "dev.silenium.libs"
 version = findProperty("deploy.version") as String? ?: "0.0.0-SNAPSHOT"
 
-val platformTxt = layout.buildDirectory.file("platform.txt")
+val platformTxt = layout.buildDirectory.file("platform.txt").apply {
+    get().asFile.parentFile.mkdirs()
+}
 exec {
     commandLine(
         "bash",
