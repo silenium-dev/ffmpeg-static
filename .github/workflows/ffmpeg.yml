@@ -23,7 +23,7 @@ permissions:
   contents: write
 jobs:
   #  android-arm:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -31,7 +31,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  android-arm64:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -39,7 +39,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  android-x86:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -47,7 +47,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  android-x86_64:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -55,7 +55,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  linux-armhf:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -63,7 +63,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  linux-arm64:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -71,7 +71,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  linux-ppc64le:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -79,7 +79,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   #  linux-x86:
-  #    runs-on: ubuntu-20.04
+  #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
   #        ext: ["", -gpl]
@@ -87,7 +87,7 @@ jobs:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
   linux-x86_64:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         ext: [ "", -gpl ]
@@ -131,7 +131,7 @@ jobs:
 #  redeploy:
 #    needs: [android-arm, android-arm64, android-x86, android-x86_64, linux-armhf, linux-arm64, linux-ppc64le, linux-x86, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86, windows-x86_64]
 #    needs: [android-arm64, android-x86_64, linux-arm64, linux-ppc64le, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86_64]
-#    runs-on: ubuntu-20.04
+#    runs-on: ubuntu-22.04
 #    steps:
 #      - uses: actions/checkout@v4
 #      - uses: ./.github/actions/redeploy
