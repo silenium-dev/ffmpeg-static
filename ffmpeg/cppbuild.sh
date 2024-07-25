@@ -1011,6 +1011,7 @@ EOF
         LIBS=
         if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
             cd ../mfx_dispatch-$MFX_VERSION
+            patch -Np1 < ../../../mfx_dispatch.patch
             autoreconf -fiv
             PKG_CONFIG_PATH="../lib/pkgconfig" ./configure --prefix=$INSTALL_PATH --disable-shared --enable-static --enable-fast-install --with-pic --host=x86_64-linux CFLAGS="-m64" CXXFLAGS="-m64"
             make -j $MAKEJ

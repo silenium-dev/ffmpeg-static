@@ -1,0 +1,11 @@
+diff --color -ruN mfx_dispatch-1.35.1/src/mfxloader.h mfx_dispatch-1.35.1-patch/src/mfxloader.h
+--- mfx_dispatch-1.35.1/src/mfxloader.h	2021-10-20 17:54:42.000000000 +0200
++++ mfx_dispatch-1.35.1-patch/src/mfxloader.h	2024-07-25 17:02:25.482011419 +0200
+@@ -25,6 +25,7 @@
+ 
+ #include <sstream>
+ #include <string>
++#include <cstdint>
+ 
+ #include "mfx/mfxdefs.h"
+ #include "mfx/mfxplugin.h"
