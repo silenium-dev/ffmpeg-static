@@ -40,7 +40,7 @@ X265=3.4
 VPX_VERSION=1.14.0
 ALSA_VERSION=1.2.11
 FREETYPE_VERSION=2.13.2
-MFX_VERSION=1.35.1
+VPL_VERSION=2.12.0
 NVCODEC_VERSION=12.2.72.0
 XML2=libxml2-2.9.12
 LIBSRT_VERSION=1.5.3
@@ -63,7 +63,7 @@ download https://github.com/videolan/x265/archive/$X265.tar.gz x265-$X265.tar.gz
 download https://github.com/webmproject/libvpx/archive/v$VPX_VERSION.tar.gz libvpx-$VPX_VERSION.tar.gz
 download https://ftp.osuosl.org/pub/blfs/conglomeration/alsa-lib/alsa-lib-$ALSA_VERSION.tar.bz2 alsa-lib-$ALSA_VERSION.tar.bz2
 download https://ftp.osuosl.org/pub/blfs/conglomeration/freetype/freetype-$FREETYPE_VERSION.tar.xz freetype-$FREETYPE_VERSION.tar.xz
-download https://github.com/lu-zero/mfx_dispatch/archive/$MFX_VERSION.tar.gz mfx_dispatch-$MFX_VERSION.tar.gz
+download https://github.com/intel/libvpl/archive/v$VPL_VERSION.tar.gz libvpl-$VPL_VERSION.tar.gz
 download http://xmlsoft.org/sources/$XML2.tar.gz $XML2.tar.gz
 download https://github.com/Haivision/srt/archive/refs/tags/v$LIBSRT_VERSION.tar.gz srt-$LIBSRT_VERSION.tar.gz
 download https://github.com/FFmpeg/nv-codec-headers/archive/n$NVCODEC_VERSION.tar.gz nv-codec-headers-$NVCODEC_VERSION.tar.gz
@@ -91,7 +91,7 @@ tar --totals -xzf ../$X264.tar.gz
 tar --totals -xzf ../x265-$X265.tar.gz
 tar --totals -xzf ../libvpx-$VPX_VERSION.tar.gz
 tar --totals -xJf ../freetype-$FREETYPE_VERSION.tar.xz
-tar --totals -xzf ../mfx_dispatch-$MFX_VERSION.tar.gz
+tar --totals -xzf ../libvpl-$VPL_VERSION.tar.gz
 tar --totals -xzf ../nv-codec-headers-$NVCODEC_VERSION.tar.gz
 tar --totals -xzf ../$XML2.tar.gz
 tar --totals -xzf ../libwebp-$WEBP_VERSION.tar.gz
@@ -861,12 +861,11 @@ EOF
         make install
         LIBS=
         if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
-            cd ../mfx_dispatch-$MFX_VERSION
-            autoreconf -fiv
-            PKG_CONFIG_PATH="../lib/pkgconfig" ./configure --prefix=$INSTALL_PATH --disable-shared --enable-static --enable-fast-install --with-pic --host=i686-linux CFLAGS="-m32 -D__ILP32__" CXXFLAGS="-m32 -D__ILP32__ -std=c++11"
-            make -j $MAKEJ
-            make install
-            ENABLE="$ENABLE --enable-libmfx"
+            cd ../libvpl-$VPL_VERSION
+            PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m64" -DCMAKE_CXX_FLAGS="-m64"
+            cmake --build _build
+            cmake --install _build
+            ENABLE="$ENABLE --enable-libvpl"
             LIBS="-lva-drm -lva-x11 -lva"
         fi
         cd ../nv-codec-headers-n$NVCODEC_VERSION
@@ -1010,13 +1009,11 @@ EOF
         make install
         LIBS=
         if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
-            cd ../mfx_dispatch-$MFX_VERSION
-            patch -Np1 < ../../../mfx_dispatch.patch
-            autoreconf -fiv
-            PKG_CONFIG_PATH="../lib/pkgconfig" ./configure --prefix=$INSTALL_PATH --disable-shared --enable-static --enable-fast-install --with-pic --host=x86_64-linux CFLAGS="-m64" CXXFLAGS="-m64"
-            make -j $MAKEJ
-            make install
-            ENABLE="$ENABLE --enable-libmfx"
+            cd ../libvpl-$VPL_VERSION
+            PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m64" -DCMAKE_CXX_FLAGS="-m64"
+            cmake --build _build
+            cmake --install _build
+            ENABLE="$ENABLE --enable-libvpl"
             LIBS="-lva-drm -lva-x11 -lva"
         fi
         cd ../nv-codec-headers-n$NVCODEC_VERSION
@@ -1037,7 +1034,7 @@ EOF
         make install
         cd ..
         cd ../ffmpeg-$FFMPEG_VERSION
-        LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m64" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/mfx -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
+        LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m64" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
         make -j $MAKEJ
         make install
         ;;
