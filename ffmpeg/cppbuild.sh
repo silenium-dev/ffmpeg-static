@@ -71,7 +71,7 @@ download https://github.com/webmproject/libwebp/archive/refs/tags/v$WEBP_VERSION
 download https://storage.googleapis.com/aom-releases/libaom-$AOMAV1_VERSION.tar.gz aom-$AOMAV1_VERSION.tar.gz
 download https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v$SVTAV1_VERSION/SVT-AV1-v$SVTAV1_VERSION.tar.gz SVT-AV1-$SVTAV1_VERSION.tar.gz
 download https://github.com/sekrit-twc/zimg/archive/refs/tags/release-$ZIMG_VERSION.tar.gz zimg-release-$ZIMG_VERSION.tar.gz
-#download https://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2 ffmpeg-$FFMPEG_VERSION.tar.bz2
+download https://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2 ffmpeg-$FFMPEG_VERSION.tar.bz2
 
 mkdir -p $PLATFORM$EXTENSION
 cd $PLATFORM$EXTENSION
@@ -98,7 +98,7 @@ tar --totals -xzf ../libwebp-$WEBP_VERSION.tar.gz
 tar --totals -xzf ../aom-$AOMAV1_VERSION.tar.gz
 tar --totals -xzf ../SVT-AV1-$SVTAV1_VERSION.tar.gz
 tar --totals -xzf ../zimg-release-$ZIMG_VERSION.tar.gz
-#tar --totals -xjf ../ffmpeg-$FFMPEG_VERSION.tar.bz2
+tar --totals -xjf ../ffmpeg-$FFMPEG_VERSION.tar.bz2
 
 if [[ "${ACLOCAL_PATH:-}" == C:\\msys64\\* ]]; then
     export ACLOCAL_PATH=/mingw64/share/aclocal:/usr/share/aclocal
@@ -117,8 +117,8 @@ export PKG_CONFIG_PATH=$INSTALL_PATH/lib/pkgconfig/
 
 patch -Np1 -d $LAME < ../../lame.patch
 patch -Np1 -d $OPENSSL < ../../openssl-android.patch
-patch -Np1 -d ffmpeg-$FFMPEG_VERSION < ../../ffmpeg.patch || true
-patch -Np1 -d ffmpeg-$FFMPEG_VERSION < ../../ffmpeg-vulkan.patch || true
+patch -Np1 -d ffmpeg-$FFMPEG_VERSION < ../../ffmpeg.patch
+patch -Np1 -d ffmpeg-$FFMPEG_VERSION < ../../ffmpeg-vulkan.patch
 # patch -Np1 -d ffmpeg-$FFMPEG_VERSION < ../../ffmpeg-flv-support-hevc-opus.patch
 sedinplace 's/bool bEnableavx512/bool bEnableavx512 = false/g' x265-*/source/common/param.h
 sedinplace 's/detect512()/false/g' x265-*/source/common/quant.cpp
