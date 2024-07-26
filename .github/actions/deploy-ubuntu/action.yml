@@ -15,6 +15,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set outputs
+      id: vars
+      shell: bash
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     - name: Install environment
       shell: bash
       env:
@@ -243,4 +247,4 @@ runs:
     - name: Publish snapshot
       shell: bash
       if: "github.event_name != 'release'"
-      run: ./gradlew build publish -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.gpl=${{ matrix.gpl }} --console=plain --info --configure-on-demand --parallel --build-cache
+      run: ./gradlew build publish -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache
