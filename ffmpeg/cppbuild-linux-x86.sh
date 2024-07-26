@@ -8,7 +8,7 @@ echo "--------------------"
 echo ""
 cd zimg-release-$ZIMG_VERSION
 autoreconf -iv
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux CFLAGS="-m32"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -119,7 +119,7 @@ make install
 LIBS=
 if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
     cd ../libvpl-$VPL_VERSION
-    PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m64" -DCMAKE_CXX_FLAGS="-m64"
+    PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m32" -DCMAKE_CXX_FLAGS="-m32"
     cmake --build _build
     cmake --install _build
     ENABLE="$ENABLE --enable-libvpl"
@@ -142,6 +142,6 @@ make -j $MAKEJ
 make install
 cd ..
 cd ../ffmpeg-$FFMPEG_VERSION
-CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" LDFLAGS="-m32 -L/usr/lib/i386-linux-gnu" LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m32 -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
+CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" LDFLAGS="-m32" LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/:/usr/lib/i386-linux-gnu/pkgconfig ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m32 -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
 make -j $MAKEJ
 make install
