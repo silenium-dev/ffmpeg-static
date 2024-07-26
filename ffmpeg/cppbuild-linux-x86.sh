@@ -3,6 +3,7 @@
 export AS="nasm"
 export CC="gcc -m32 -fPIC -msse2"
 export CXX="g++ -m32 -fPIC -msse2"
+export LD="g++ -m32 -fPIC"
 export LDFLAGS="-m32"
 echo ""
 echo "--------------------"
@@ -11,7 +12,7 @@ echo "--------------------"
 echo ""
 cd zimg-release-$ZIMG_VERSION
 autoreconf -iv
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -20,7 +21,7 @@ echo "Building zlib"
 echo "--------------------"
 echo ""
 cd ../$ZLIB
-./configure --prefix=$INSTALL_PATH --static
+./configure --prefix=$INSTALL_PATH --static CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -29,7 +30,7 @@ echo "Building LAME"
 echo "--------------------"
 echo ""
 cd ../$LAME
-./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic
+./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -38,7 +39,7 @@ echo "Building XML2"
 echo "--------------------"
 echo ""
 cd ../$XML2
-./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG
+./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -47,23 +48,23 @@ echo "Building speex"
 echo "--------------------"
 echo ""
 cd ../$SPEEX
-PKG_CONFIG= ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
+PKG_CONFIG= ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 cd ../$OPUS
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 cd ../$OPENCORE_AMR
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 cd ../$VO_AMRWBENC
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 cd ../$OPENSSL
-./Configure linux-elf -m32 -fPIC no-shared --prefix=$INSTALL_PATH --libdir=lib
+CC=gcc CXX=g++ LD=g++ ./Configure linux-elf -m32 -fPIC no-shared --prefix=$INSTALL_PATH --libdir=lib
 make -s -j $MAKEJ
 make install_sw
 cd ../srt-$LIBSRT_VERSION
@@ -73,7 +74,7 @@ make install
 cd ../openh264-$OPENH264_VERSION
 make -j $MAKEJ DESTDIR=./ PREFIX=.. AR=ar ARCH=x86 USE_ASM=No install-static
 cd ../$X264
-./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl
+./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 cd ../x265-$X265/build/linux
@@ -108,7 +109,7 @@ make install
 # ----
 cd ../../../
 cd ../libvpx-$VPX_VERSION
-./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-examples --disable-unit-tests --target=x86-linux-gcc --as=nasm
+./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-examples --disable-unit-tests --target=x86-linux-gcc --as=nasm  CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ
 make install
 cd ../libwebp-$WEBP_VERSION
@@ -116,7 +117,7 @@ CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-
 make -j $MAKEJ V=0
 make install
 cd ../freetype-$FREETYPE_VERSION
-./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
+./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ
 make install
 LIBS=
