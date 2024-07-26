@@ -1,4 +1,4 @@
-CI and ffmpeg build are copied from: https://github.com/bytedeco/javacpp-presets/tree/3461452b6d93c8d71e58d1b0f18ff33d1c88aea8
+CI and ffmpeg build are mostly copied from: https://github.com/bytedeco/javacpp-presets/tree/3461452b6d93c8d71e58d1b0f18ff33d1c88aea8
 LICENSE: Apache-2.0
 
                                  Apache License
