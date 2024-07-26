@@ -26,7 +26,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -34,7 +34,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -42,7 +42,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -50,7 +50,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -58,7 +58,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -66,7 +66,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -74,7 +74,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -82,7 +82,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    strategy:
   #      matrix:
-  #        ext: ["", -gpl]
+  #        gpl: ["false", "true"]
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
@@ -100,7 +100,7 @@ jobs:
 #    runs-on: macos-12
 #    strategy:
 #      matrix:
-#        ext: ["", -gpl]
+#        gpl: ["false", "true"]
 #    steps:
 #      - uses: actions/checkout@v4
 #      - uses: ./.github/actions/deploy-macosx
@@ -108,7 +108,7 @@ jobs:
 #    runs-on: macos-12
 #    strategy:
 #      matrix:
-#        ext: ["", -gpl]
+#        gpl: ["false", "true"]
 #    steps:
 #      - uses: actions/checkout@v4
 #      - uses: ./.github/actions/deploy-macosx
@@ -116,7 +116,7 @@ jobs:
 #    runs-on: windows-2019
 #    strategy:
 #      matrix:
-#        ext: ["", -gpl]
+#        gpl: ["false", "true"]
 #    steps:
 #      - uses: actions/checkout@v4
 #      - uses: ./.github/actions/deploy-windows
@@ -124,7 +124,7 @@ jobs:
 #    runs-on: windows-2019
 #    strategy:
 #      matrix:
-#        ext: ["", -gpl]
+#        gpl: ["false", "true"]
 #    steps:
 #      - uses: actions/checkout@v4
 #      - uses: ./.github/actions/deploy-windows

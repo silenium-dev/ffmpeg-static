@@ -317,9 +317,9 @@ runs:
     - name: Publish release
       shell: bash
       if: "github.event_name == 'release'"
-      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
+      run: ./gradlew build publish -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
 
     - name: Publish snapshot
       shell: bash
       if: "github.event_name != 'release'"
-      run: ./gradlew build publish -Pnative.extension=${{ matrix.ext }} --console=plain --info --configure-on-demand --parallel --build-cache
+      run: ./gradlew build publish -Pffmpeg.gpl=${{ matrix.gpl }} --console=plain --info --configure-on-demand --parallel --build-cache

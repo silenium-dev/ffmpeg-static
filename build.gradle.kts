@@ -1,59 +1,70 @@
-import org.gradle.internal.extensions.stdlib.capitalized
+import dev.silenium.libs.jni.NativePlatform
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
+buildscript {
+    repositories {
+        maven("https://reposilite.silenium.dev/releases") {
+            name = "silenium-releases"
+        }
+    }
+    dependencies {
+        classpath(libs.jni.utils)
+    }
+}
 
 plugins {
-    base
+    alias(libs.plugins.kotlin)
     `maven-publish`
 }
 
-group = "dev.silenium.libs"
+group = "dev.silenium.libs.ffmpeg"
 version = findProperty("deploy.version") as String? ?: "0.0.0-SNAPSHOT"
 
-val platformTxt = layout.buildDirectory.file("platform.txt").apply {
-    get().asFile.parentFile.mkdirs()
+repositories {
+    mavenCentral()
+    maven("https://reposilite.silenium.dev/releases") {
+        name = "silenium-releases"
+    }
 }
-exec {
-    commandLine(
-        "bash",
-        "-c",
-        "bash " + layout.projectDirectory.file("detect-platform.sh").asFile.absolutePath + " > " + platformTxt.get().asFile.absolutePath,
-    )
-    workingDir(layout.projectDirectory.asFile)
-}.assertNormalExitValue()
-val platform: String = platformTxt.get().asFile.readText().trim()
-val platformExtension = findProperty("native.extension") as String? ?: ""
-logger.lifecycle("Building for platform: $platform${platformExtension}")
 
-val compileDir = layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}${platformExtension}")
+dependencies {
+    implementation(libs.jni.utils)
+}
+
+val withGPL: Boolean = findProperty("ffmpeg.gpl")?.toString()?.toBoolean() ?: false
+val platformExtension = "-gpl".takeIf { withGPL }.orEmpty()
+val platform = NativePlatform.platform(platformExtension)
 
 val compileNative by tasks.registering(Exec::class) {
     commandLine(
         "bash",
         layout.projectDirectory.file("cppbuild.sh").asFile.absolutePath,
-        "-extension", platformExtension,
-        "install",
+        "-extension", platform.extension,
+        "-platform", platform.osArch,
+        "install", "ffmpeg",
     )
     workingDir(layout.projectDirectory.asFile)
-    environment("PROJECTS" to "ffmpeg")
 
     inputs.property("platform", platform)
+    inputs.files(layout.projectDirectory.files("cppbuild.sh"))
+    inputs.files(layout.projectDirectory.files("detect-platform.sh"))
+    inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
     inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
     inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
-    inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
-    outputs.dir(compileDir)
+    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}"))
     outputs.cacheIf { true }
 }
 
-tasks.build {
-    dependsOn(compileNative)
-}
+tasks.processResources {
+    val platform = NativePlatform.platform(platformExtension)
 
-val bundleJar by tasks.registering(Jar::class) {
     from(compileNative.get().outputs.files) {
         include("lib/*.so")
         include("lib/*.dll")
         include("lib/*.dylib")
         eachFile {
-            path = "natives/$platform/${this.name}"
+            path = "natives/$platform/$name"
         }
         into("natives/$platform/")
     }
@@ -68,12 +79,24 @@ val zipBuild by tasks.registering(Zip::class) {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+        languageVersion = KotlinVersion.KOTLIN_1_7
+    }
+    jvmToolchain(8)
+}
+
+java {
+    withSourcesJar()
+}
+
 publishing {
     publications {
-        create<MavenPublication>("native${platform.split("-").joinToString("") { it.capitalized() }}") {
-            artifact(bundleJar)
+        create<MavenPublication>("native${platform.capitalized}") {
+            from(components["java"])
             artifact(zipBuild)
-            artifactId = "ffmpeg-natives-${platform}${platformExtension}"
+            artifactId = "ffmpeg-natives-${platform}"
         }
     }
 
