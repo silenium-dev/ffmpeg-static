@@ -3,6 +3,7 @@
 export AS="nasm"
 export CC="gcc -m32 -fPIC -msse2"
 export CXX="g++ -m32 -fPIC -msse2"
+export LDFLAGS="-m32"
 echo ""
 echo "--------------------"
 echo "Building zimg"
@@ -19,7 +20,7 @@ echo "Building zlib"
 echo "--------------------"
 echo ""
 cd ../$ZLIB
-CC="gcc -m32 -fPIC" ./configure --prefix=$INSTALL_PATH --static
+./configure --prefix=$INSTALL_PATH --static
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -28,7 +29,7 @@ echo "Building LAME"
 echo "--------------------"
 echo ""
 cd ../$LAME
-./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32 -msse2"
+./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic --host=i686-linux-gnu
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -37,7 +38,7 @@ echo "Building XML2"
 echo "--------------------"
 echo ""
 cd ../$XML2
-./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG --host=i686-linux-gnu CFLAGS="-m32 -msse2"
+./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG --host=i686-linux-gnu
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -46,19 +47,19 @@ echo "Building speex"
 echo "--------------------"
 echo ""
 cd ../$SPEEX
-PKG_CONFIG= ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32"
+PKG_CONFIG= ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
 make -j $MAKEJ V=0
 make install
 cd ../$OPUS
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
 make -j $MAKEJ V=0
 make install
 cd ../$OPENCORE_AMR
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32" CXXFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
 make -j $MAKEJ V=0
 make install
 cd ../$VO_AMRWBENC
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32" CXXFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
 make -j $MAKEJ V=0
 make install
 cd ../$OPENSSL
@@ -66,7 +67,7 @@ cd ../$OPENSSL
 make -s -j $MAKEJ
 make install_sw
 cd ../srt-$LIBSRT_VERSION
-CC="gcc -m32" CXX="g++ -m32" CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $SRT_CONFIG .
+CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $SRT_CONFIG .
 make -j $MAKEJ V=0
 make install
 cd ../openh264-$OPENH264_VERSION
@@ -80,17 +81,17 @@ cd ../x265-$X265/build/linux
 mkdir -p 8bit 10bit 12bit
 
 cd 12bit
-CC="gcc -m32" CXX="g++ -m32" $CMAKE ../../../source -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_SHARED=OFF -DENABLE_CLI=OFF -DENABLE_ASSEMBLY=OFF -DMAIN12=ON -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DNASM_EXECUTABLE:FILEPATH=$INSTALL_PATH/bin/nasm
+$CMAKE ../../../source -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_SHARED=OFF -DENABLE_CLI=OFF -DENABLE_ASSEMBLY=OFF -DMAIN12=ON -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DNASM_EXECUTABLE:FILEPATH=$INSTALL_PATH/bin/nasm
 make -j $MAKEJ
 
 cd ../10bit
-CC="gcc -m32" CXX="g++ -m32" $CMAKE ../../../source -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_SHARED=OFF -DENABLE_CLI=OFF -DENABLE_ASSEMBLY=OFF -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DNASM_EXECUTABLE:FILEPATH=$INSTALL_PATH/bin/nasm
+$CMAKE ../../../source -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_SHARED=OFF -DENABLE_CLI=OFF -DENABLE_ASSEMBLY=OFF -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DNASM_EXECUTABLE:FILEPATH=$INSTALL_PATH/bin/nasm
 make -j $MAKEJ
 
 cd ../8bit
 ln -sf ../10bit/libx265.a libx265_main10.a
 ln -sf ../12bit/libx265.a libx265_main12.a
-CC="gcc -m32" CXX="g++ -m32" $CMAKE ../../../source -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DENABLE_SHARED:BOOL=OFF -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DNASM_EXECUTABLE:FILEPATH=$INSTALL_PATH/bin/nasm -DENABLE_CLI=OFF
+$CMAKE ../../../source -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DENABLE_SHARED:BOOL=OFF -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DNASM_EXECUTABLE:FILEPATH=$INSTALL_PATH/bin/nasm -DENABLE_CLI=OFF
 make -j $MAKEJ
 
 # rename the 8bit library, then combine all three into libx265.a
@@ -111,17 +112,17 @@ cd ../libvpx-$VPX_VERSION
 make -j $MAKEJ
 make install
 cd ../libwebp-$WEBP_VERSION
-CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
+CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
 make -j $MAKEJ V=0
 make install
 cd ../freetype-$FREETYPE_VERSION
-./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
 make -j $MAKEJ
 make install
 LIBS=
 if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
     cd ../libvpl-$VPL_VERSION
-    PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m32" -DCMAKE_CXX_FLAGS="-m32"
+    PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release
     cmake --build _build
     cmake --install _build
     ENABLE="$ENABLE --enable-libvpl"
@@ -132,18 +133,18 @@ make install PREFIX=$INSTALL_PATH
 cd ../libaom-$AOMAV1_VERSION
 mkdir -p build_release
 cd build_release
-CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $LIBAOM_CONFIG ..
+CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $LIBAOM_CONFIG ..
 make -j $MAKEJ
 make install
 cd ..
 cd ../SVT-AV1-v$SVTAV1_VERSION
 mkdir -p build_release
 cd build_release
-CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $LIBSVTAV1_CONFIG ..
+CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $LIBSVTAV1_CONFIG ..
 make -j $MAKEJ
 make install
 cd ..
 cd ../ffmpeg-$FFMPEG_VERSION
-CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" LDFLAGS="-m32" LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/:/usr/lib/i386-linux-gnu/pkgconfig ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m32 -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
+LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m32 -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
 make -j $MAKEJ
 make install
