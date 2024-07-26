@@ -1,6 +1,8 @@
 name: ffmpeg
 on:
   push:
+    branches:
+      - '*'
     tags-ignore:
       - '*'
   pull_request:
@@ -54,43 +56,48 @@ jobs:
   #    steps:
   #      - uses: actions/checkout@v4
   #      - uses: ./.github/actions/deploy-ubuntu
-  #  linux-armhf:
-  #    runs-on: ubuntu-22.04
-  #    strategy:
-  #      matrix:
-  #        gpl: ["false", "true"]
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #      - uses: ./.github/actions/deploy-ubuntu
-  #  linux-arm64:
-  #    runs-on: ubuntu-22.04
-  #    strategy:
-  #      matrix:
-  #        gpl: ["false", "true"]
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #      - uses: ./.github/actions/deploy-ubuntu
-  #  linux-ppc64le:
-  #    runs-on: ubuntu-22.04
-  #    strategy:
-  #      matrix:
-  #        gpl: ["false", "true"]
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #      - uses: ./.github/actions/deploy-ubuntu
-  #  linux-x86:
-  #    runs-on: ubuntu-22.04
-  #    strategy:
-  #      matrix:
-  #        gpl: ["false", "true"]
-  #    steps:
-  #      - uses: actions/checkout@v4
-  #      - uses: ./.github/actions/deploy-ubuntu
+  linux-armhf:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        gpl: ["false", "true"]
+    name: linux-armhf (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-ubuntu
+  linux-arm64:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        gpl: ["false", "true"]
+    name: linux-arm64 (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-ubuntu
+  linux-ppc64le:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        gpl: ["false", "true"]
+    name: linux-ppc64le (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-ubuntu
+  linux-x86:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        gpl: ["false", "true"]
+    name: linux-x86 (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-ubuntu
   linux-x86_64:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         gpl: ["false", "true"]
+    name: linux-x86_64 (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
