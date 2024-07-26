@@ -63,7 +63,7 @@ cd ../$VO_AMRWBENC
 make -j $MAKEJ V=0
 make install
 cd ../$OPENSSL
-./Configure linux-elf -m32 -fPIC no-shared --prefix=$INSTALL_PATH --libdir=lib
+./Configure linux-elf -m64 -fPIC no-shared --prefix=$INSTALL_PATH --libdir=lib
 make -s -j $MAKEJ
 make install_sw
 cd ../srt-$LIBSRT_VERSION
