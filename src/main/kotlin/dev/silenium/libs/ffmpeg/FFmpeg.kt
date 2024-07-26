@@ -14,19 +14,38 @@ object FFmpeg {
         "swresample",
         "swscale",
     )
-    private var loaded = false
+    private var loadedGPL = false
+    private var loadedLGPL = false
 
     @Synchronized
-    fun ensureLoaded(withGPL: Boolean = false) {
-        if (loaded) return
+    fun ensureLoadedGPL(): Result<Unit> {
+        if (loadedLGPL) return Result.failure(IllegalStateException("GPL and LGPL libraries are mutually exclusive"))
+        if (loadedGPL) return Result.success(Unit)
 
         libs.forEach {
             NativeLoader.loadLibraryFromClasspath(
                 baseName = it,
-                platform = NativePlatform.platform("-gpl".takeIf { withGPL }.orEmpty()),
+                platform = NativePlatform.platform("-gpl"),
             )
         }
 
-        loaded = true
+        loadedGPL = true
+        return Result.success(Unit)
+    }
+
+    @Synchronized
+    fun ensureLoadedLGPL(): Result<Unit> {
+        if (loadedGPL) return Result.failure(IllegalStateException("GPL and LGPL libraries are mutually exclusive"))
+        if (loadedLGPL) return Result.success(Unit)
+
+        libs.forEach {
+            NativeLoader.loadLibraryFromClasspath(
+                baseName = it,
+                platform = NativePlatform.platform(),
+            )
+        }
+
+        loadedLGPL = true
+        return Result.success(Unit)
     }
 }
