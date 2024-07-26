@@ -32,52 +32,61 @@ dependencies {
     implementation(libs.jni.utils)
 }
 
-val withGPL: Boolean = findProperty("ffmpeg.gpl")?.toString()?.toBoolean() ?: false
+val deployKotlin = (findProperty("deploy.kotlin") as String?)?.toBoolean() ?: true
+val deployNative = (findProperty("deploy.native") as String?)?.toBoolean() ?: true
+val withGPL: Boolean = findProperty("ffmpeg.gpl").toString().toBoolean()
 val platformExtension = "-gpl".takeIf { withGPL }.orEmpty()
 val platform = NativePlatform.platform(platformExtension)
 
-val compileNative by tasks.registering(Exec::class) {
-    commandLine(
-        "bash",
-        layout.projectDirectory.file("cppbuild.sh").asFile.absolutePath,
-        "-extension", platform.extension,
-        "-platform", platform.osArch,
-        "install", "ffmpeg",
-    )
-    workingDir(layout.projectDirectory.asFile)
+val compileNative = if(deployNative) {
+    tasks.register<Exec>("compileNative") {
+        enabled = deployNative
+        commandLine(
+            "bash",
+            layout.projectDirectory.file("cppbuild.sh").asFile.absolutePath,
+            "-extension", platform.extension,
+            "-platform", platform.osArch,
+            "install", "ffmpeg",
+        )
+        workingDir(layout.projectDirectory.asFile)
 
-    inputs.property("platform", platform)
-    inputs.files(layout.projectDirectory.files("cppbuild.sh"))
-    inputs.files(layout.projectDirectory.files("detect-platform.sh"))
-    inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
-    inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
-    inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
-    outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}"))
-    outputs.cacheIf { true }
-}
+        inputs.property("platform", platform)
+        inputs.files(layout.projectDirectory.files("cppbuild.sh"))
+        inputs.files(layout.projectDirectory.files("detect-platform.sh"))
+        inputs.files(layout.projectDirectory.files("ffmpeg/cppbuild.sh"))
+        inputs.files(layout.projectDirectory.files("ffmpeg/*.patch"))
+        inputs.files(layout.projectDirectory.files("ffmpeg/*.diff"))
+        outputs.dir(layout.projectDirectory.dir("ffmpeg/cppbuild/${platform}"))
+        outputs.cacheIf { true }
+    }
+} else null
 
-tasks.processResources {
-    val platform = NativePlatform.platform(platformExtension)
+val nativesJar = if (deployNative) {
+    tasks.register<Jar>("nativesJar") {
+        val platform = NativePlatform.platform(platformExtension)
 
-    from(compileNative.get().outputs.files) {
-        include("lib/*.so")
-        include("lib/*.dll")
-        include("lib/*.dylib")
-        eachFile {
-            path = "natives/$platform/$name"
+        from(compileNative!!.get().outputs.files) {
+            include("lib/*.so")
+            include("lib/*.dll")
+            include("lib/*.dylib")
+            eachFile {
+                path = "natives/$platform/$name"
+            }
+            into("natives/$platform/")
         }
-        into("natives/$platform/")
     }
-}
+} else null
 
-val zipBuild by tasks.registering(Zip::class) {
-    from(compileNative.get().outputs.files) {
-        include("bin/**/*")
-        include("include/**/*")
-        include("lib/**/*")
-        include("share/**/*")
+val zipBuild = if (deployNative) {
+    tasks.register<Zip>("zipBuild") {
+        from(compileNative!!.get().outputs.files) {
+            include("bin/**/*")
+            include("include/**/*")
+            include("lib/**/*")
+            include("share/**/*")
+        }
     }
-}
+} else null
 
 kotlin {
     compilerOptions {
@@ -93,10 +102,18 @@ java {
 
 publishing {
     publications {
-        create<MavenPublication>("native${platform.capitalized}") {
-            from(components["java"])
-            artifact(zipBuild)
-            artifactId = "ffmpeg-natives-${platform}"
+        if (deployNative) {
+            create<MavenPublication>("native${platform.capitalized}") {
+                artifact(nativesJar)
+                artifact(zipBuild)
+                artifactId = "ffmpeg-natives-${platform}"
+            }
+        }
+        if (deployKotlin) {
+            create<MavenPublication>("kotlin") {
+                from(components["java"])
+                artifactId = "ffmpeg-natives"
+            }
         }
     }
 
