@@ -161,13 +161,15 @@ jobs:
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
           add-job-summary-as-pr-comment: on-failure
-
       - name: Publish release
         shell: bash
         if: "github.event_name == 'release'"
         run: ./gradlew build publish -Pdeploy.native=false -Pdeploy.kotlin=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
 
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Publish snapshot
         shell: bash
         if: "github.event_name != 'release'"
-        run: ./gradlew build publish -Pdeploy.native=false -Pdeploy.kotlin=true -Pffmpeg.gpl=${{ matrix.gpl }} --console=plain --info --configure-on-demand --parallel --build-cache
+        run: ./gradlew build publish -Pdeploy.native=false -Pdeploy.kotlin=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache
