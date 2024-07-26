@@ -21,7 +21,7 @@ echo "Building zlib"
 echo "--------------------"
 echo ""
 cd ../$ZLIB
-./configure --prefix=$INSTALL_PATH --static
+./configure --prefix=$INSTALL_PATH --static CC="$CC" CXX="$CXX" LD="$LD" LDFLAGS="$LDFLAGS"
 make -j $MAKEJ V=0
 make install
 echo ""
