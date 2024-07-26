@@ -29,7 +29,7 @@ echo "Building LAME"
 echo "--------------------"
 echo ""
 cd ../$LAME
-./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic --host=i686-linux-gnu
+./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -38,7 +38,7 @@ echo "Building XML2"
 echo "--------------------"
 echo ""
 cd ../$XML2
-./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG --host=i686-linux-gnu
+./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -73,7 +73,7 @@ make install
 cd ../openh264-$OPENH264_VERSION
 make -j $MAKEJ DESTDIR=./ PREFIX=.. AR=ar ARCH=x86 USE_ASM=No install-static
 cd ../$X264
-./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl --host=i686-linux-gnu
+./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl
 make -j $MAKEJ V=0
 make install
 cd ../x265-$X265/build/linux
@@ -145,6 +145,6 @@ make -j $MAKEJ
 make install
 cd ..
 cd ../ffmpeg-$FFMPEG_VERSION
-LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="gcc -m32 -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
+LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE $ENABLE_VULKAN --enable-libdrm --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --enable-libpulse --cc="$CC -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2 -I../include/vpl -I../include/svt-av1" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS" || cat ffbuild/config.log
 make -j $MAKEJ
 make install
