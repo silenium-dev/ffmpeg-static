@@ -1,6 +1,8 @@
 #!/bin/bash
 
 export AS="nasm"
+export CC="gcc -m32 -fPIC -msse2"
+export CXX="g++ -m32 -fPIC -msse2"
 echo ""
 echo "--------------------"
 echo "Building zimg"
@@ -8,7 +10,7 @@ echo "--------------------"
 echo ""
 cd zimg-release-$ZIMG_VERSION
 autoreconf -iv
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux CFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -26,7 +28,7 @@ echo "Building LAME"
 echo "--------------------"
 echo ""
 cd ../$LAME
-./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic --host=i686-linux CFLAGS="-m32 -msse2"
+./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32 -msse2"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -35,7 +37,7 @@ echo "Building XML2"
 echo "--------------------"
 echo ""
 cd ../$XML2
-./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG --host=i686-linux CFLAGS="-m32 -msse2"
+./configure --prefix=$INSTALL_PATH $LIBXML_CONFIG --host=i686-linux-gnu CFLAGS="-m32 -msse2"
 make -j $MAKEJ V=0
 make install
 echo ""
@@ -44,19 +46,19 @@ echo "Building speex"
 echo "--------------------"
 echo ""
 cd ../$SPEEX
-PKG_CONFIG= ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux CFLAGS="-m32"
+PKG_CONFIG= ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32"
 make -j $MAKEJ V=0
 make install
 cd ../$OPUS
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux CFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32"
 make -j $MAKEJ V=0
 make install
 cd ../$OPENCORE_AMR
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux CFLAGS="-m32" CXXFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32" CXXFLAGS="-m32"
 make -j $MAKEJ V=0
 make install
 cd ../$VO_AMRWBENC
-./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux CFLAGS="-m32" CXXFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32" CXXFLAGS="-m32"
 make -j $MAKEJ V=0
 make install
 cd ../$OPENSSL
@@ -70,7 +72,7 @@ make install
 cd ../openh264-$OPENH264_VERSION
 make -j $MAKEJ DESTDIR=./ PREFIX=.. AR=ar ARCH=x86 USE_ASM=No install-static
 cd ../$X264
-./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl --host=i686-linux
+./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl --host=i686-linux-gnu
 make -j $MAKEJ V=0
 make install
 cd ../x265-$X265/build/linux
@@ -113,7 +115,7 @@ CC="gcc -m32 -fPIC" CXX="g++ -m32 -fPIC" CFLAGS="-I$INSTALL_PATH/include/" CXXFL
 make -j $MAKEJ V=0
 make install
 cd ../freetype-$FREETYPE_VERSION
-./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=i686-linux CFLAGS="-m32"
+./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=i686-linux-gnu CFLAGS="-m32"
 make -j $MAKEJ
 make install
 LIBS=
