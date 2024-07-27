@@ -63,6 +63,10 @@ val nativesJar = if (deployNative) {
             }
             into("natives/$platform/")
         }
+        from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*"))
+        from(rootProject.layout.projectDirectory.file("LICENSE")) {
+            rename { "LICENSE.ffmpeg-static" }
+        }
     }
 } else null
 
@@ -73,6 +77,10 @@ val zipBuild = if (deployNative) {
             include("include/**/*")
             include("lib/**/*")
             include("share/**/*")
+        }
+        from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*"))
+        from(rootProject.layout.projectDirectory.file("LICENSE")) {
+            rename { "LICENSE.ffmpeg-static" }
         }
     }
 } else null
