@@ -34,6 +34,12 @@ java {
     withSourcesJar()
 }
 
+tasks.jar {
+    from(layout.projectDirectory) {
+        include("LICENSE", "THIRDPARTY_LICENSES")
+    }
+}
+
 allprojects {
     apply<MavenPublishPlugin>()
 
