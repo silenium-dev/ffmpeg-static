@@ -751,7 +751,7 @@ EOF
         echo ""
         cd zimg-release-$ZIMG_VERSION
         autoreconf -iv
-        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i386-linux-gnu
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic CFLAGS="-m32" CXXFLAGS="-m32"
         make -j $MAKEJ V=0
         make install
         echo ""
