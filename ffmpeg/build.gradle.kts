@@ -78,9 +78,11 @@ val zipBuild = if (deployNative) {
             include("lib/**/*")
             include("share/**/*")
         }
-        from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*"))
-        from(rootProject.layout.projectDirectory.file("LICENSE")) {
-            rename { "LICENSE.ffmpeg-static" }
+        from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")) {
+            rename { "ffmpeg-static-$name" }
+        }
+        from(rootProject.layout.projectDirectory.files("LICENSE", "THIRDPARTY_LICENSES")) {
+            rename { "ffmpeg-static-$name" }
         }
     }
 } else null
