@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.0"
-jni-utils = "0.1.3"
+jni-utils = "0.1.4"
 
 [libraries]
 jni-utils = { group = "dev.silenium.libs.jni", name = "jni-utils", version.ref = "jni-utils" }
