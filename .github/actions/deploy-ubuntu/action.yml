@@ -124,10 +124,6 @@ runs:
         echo "sources.list:"
         cat /etc/apt/sources.list
         for f in /etc/apt/sources.list.d/*.list; do echo "$f:"; cat $f; done
-        # $SUDO echo deb [arch=amd64] https://ppa.launchpad.net/openjdk-r/ppa/ubuntu $CODENAME main | $SUDO tee -a /etc/apt/sources.list
-        # $SUDO echo deb [arch=amd64] https://ppa.launchpad.net/deadsnakes/ppa/ubuntu $CODENAME main | $SUDO tee -a /etc/apt/sources.list
-        # $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EB9B1D8886F44E2A
-        # $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
         $SUDO apt-get update
         $SUDO apt-get -y install gcc-multilib g++-multilib gfortran-multilib python3 python2.7 python3-minimal python2.7-minimal rpm libasound2-dev:$ARCH freeglut3-dev:$ARCH libfontconfig-dev:$ARCH libgtk2.0-dev:$ARCH libusb-dev:$ARCH libusb-1.0-0-dev:$ARCH libffi-dev:$ARCH libbz2-dev:$ARCH zlib1g-dev:$ARCH libxcb1-dev:$ARCH libpulse-dev:$ARCH libdrm-dev:$ARCH libva-dev:$ARCH
         $SUDO apt-get -y install pkgconf ccache clang $TOOLCHAIN openjdk-8-jdk ant python2 python3-pip swig git file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake make libtool bison flex perl nasm ragel curl libcurl4-openssl-dev libssl-dev libffi-dev libbz2-dev zlib1g-dev rapidjson-dev
@@ -136,20 +132,6 @@ runs:
         echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
         ln -sf $JAVA_HOME /usr/lib/jvm/default-java
         find /usr/lib/jvm/default-java/
-        # curl -LO https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2-linux-x86_64.tar.gz
-        curl -LO https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
-        curl -LO https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.18.3.tar.gz
-        curl -LO https://services.gradle.org/distributions/gradle-7.1.1-bin.zip
-        # $SUDO tar -xzf cmake-3.24.2-linux-x86_64.tar.gz -C /opt/
-        $SUDO tar -xzf apache-maven-3.6.3-bin.tar.gz -C /opt/
-        $SUDO tar -xzf git-2.18.3.tar.gz
-        $SUDO unzip gradle-7.1.1-bin.zip -d /opt/
-        # pushd git-2.18.3; make -j2 prefix=/usr/local/; $SUDO make -j2 prefix=/usr/local/ install; popd
-        # $SUDO ln -sf /opt/cmake-3.24.2-linux-x86_64/bin/* /usr/bin/
-        $SUDO ln -sf /opt/apache-maven-3.6.3/bin/mvn /usr/bin/mvn
-        $SUDO ln -sf /opt/gradle-7.1.1/bin/gradle /usr/bin/gradle
-        
-        $SUDO python3 -m pip install gdown || $SUDO python3 -m pip install gdown
         
         # install vulkan sdk
         echo Installing Vulkan-SDK
