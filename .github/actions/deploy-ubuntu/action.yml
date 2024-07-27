@@ -217,11 +217,13 @@ runs:
       uses: gradle/actions/setup-gradle@v3
       with:
         cache-encryption-key: ${{ inputs.gradle-cache-encryption-key }}
-        gradle-home-cache-cleanup: true
+#        gradle-home-cache-cleanup: true
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
         build-scan-terms-of-use-agree: "yes"
         add-job-summary-as-pr-comment: on-failure
+        cache-write-only: true
+
 
     - name: Publish release
       shell: bash
