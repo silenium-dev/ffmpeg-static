@@ -26,6 +26,7 @@ val withGPL: Boolean = findProperty("ffmpeg.gpl").toString().toBoolean()
 val platformExtension = "-gpl".takeIf { withGPL }.orEmpty()
 val platformString = findProperty("ffmpeg.platform")?.toString()
 val platform = platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
+val compileDir = layout.projectDirectory.dir("cppbuild/${platform}")
 
 val compileNative = if (deployNative) {
     tasks.register<Exec>("compileNative") {
@@ -44,7 +45,10 @@ val compileNative = if (deployNative) {
         inputs.files(layout.projectDirectory.files("cppbuild.sh"))
         inputs.files(layout.projectDirectory.files("*.patch"))
         inputs.files(layout.projectDirectory.files("*.diff"))
-        outputs.dir(layout.projectDirectory.dir("cppbuild/${platform}"))
+        outputs.dir(compileDir.dir("bin"))
+        outputs.dir(compileDir.dir("include"))
+        outputs.dir(compileDir.dir("lib"))
+        outputs.dir(compileDir.dir("share"))
         outputs.cacheIf { true }
     }
 } else null
@@ -57,17 +61,15 @@ fun AbstractCopyTask.licenses() {
 
 val nativesJar = if (deployNative) {
     tasks.register<Jar>("nativesJar") {
+        dependsOn(compileNative)
         // Required for configuration cache
         val platform =
             platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
 
-        from(compileNative!!.get().outputs.files) {
-            include("lib/*.so")
-            include("lib/*.dll")
-            include("lib/*.dylib")
-            eachFile {
-                path = "natives/$platform/$name"
-            }
+        from(compileDir.dir("lib")) {
+            include("*.so")
+            include("*.dll")
+            include("*.dylib")
             into("natives/$platform/")
         }
         licenses()
@@ -76,7 +78,8 @@ val nativesJar = if (deployNative) {
 
 val zipBuild = if (deployNative) {
     tasks.register<Zip>("zipBuild") {
-        from(compileNative!!.get().outputs.files) {
+        dependsOn(compileNative)
+        from(compileDir) {
             include("bin/**/*")
             include("include/**/*")
             include("lib/**/*")
