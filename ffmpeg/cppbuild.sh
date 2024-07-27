@@ -862,7 +862,7 @@ EOF
         LIBS=
         if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
             cd ../libvpl-$VPL_VERSION
-            PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m32" -DCMAKE_CXX_FLAGS="-m32"
+            PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m32" -DCMAKE_CXX_FLAGS="-m32"
             cmake --build _build
             cmake --install _build
             ENABLE="$ENABLE --enable-libvpl"
@@ -1010,7 +1010,7 @@ EOF
         LIBS=
         if [[ ! -z $(ldconfig -p | grep libva-drm) ]]; then
             cd ../libvpl-$VPL_VERSION
-            PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m64" -DCMAKE_CXX_FLAGS="-m64"
+            PKG_CONFIG_PATH=../lib/pkgconfig cmake -B _build -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-m64" -DCMAKE_CXX_FLAGS="-m64"
             cmake --build _build
             cmake --install _build
             ENABLE="$ENABLE --enable-libvpl"
