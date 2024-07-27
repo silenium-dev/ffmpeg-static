@@ -251,9 +251,9 @@ runs:
     - name: Publish release
       shell: bash
       if: "github.event_name == 'release'"
-      run: ./gradlew build publish -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
+      run: ./gradlew build publish -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.platform=${{ github.job }} -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
 
     - name: Publish snapshot
       shell: bash
       if: "github.event_name != 'release'"
-      run: ./gradlew build publish -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache
+      run: ./gradlew build publish -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.platform=${{ github.job }} -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache
