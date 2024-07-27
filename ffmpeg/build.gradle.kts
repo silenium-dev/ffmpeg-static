@@ -1,4 +1,5 @@
 import dev.silenium.libs.jni.NativePlatform
+import dev.silenium.libs.jni.Platform
 
 buildscript {
     repositories {
@@ -23,9 +24,10 @@ val deployNative = (findProperty("deploy.native") as String?)?.toBoolean() ?: tr
 
 val withGPL: Boolean = findProperty("ffmpeg.gpl").toString().toBoolean()
 val platformExtension = "-gpl".takeIf { withGPL }.orEmpty()
-val platform = NativePlatform.platform(platformExtension)
+val platformString = findProperty("ffmpeg.platform")?.toString()
+val platform = platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
 
-val compileNative = if(deployNative) {
+val compileNative = if (deployNative) {
     tasks.register<Exec>("compileNative") {
         enabled = deployNative
         commandLine(
@@ -49,7 +51,8 @@ val compileNative = if(deployNative) {
 
 val nativesJar = if (deployNative) {
     tasks.register<Jar>("nativesJar") {
-        val platform = NativePlatform.platform(platformExtension)
+        // Required for configuration cache
+        val platform = platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
 
         from(compileNative!!.get().outputs.files) {
             include("lib/*.so")
