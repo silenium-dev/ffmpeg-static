@@ -50,7 +50,7 @@ runs:
         
         export ARCH=amd64
         export PREFIX=x86_64-linux-gnu
-        if [[ "$CI_DEPLOY_PLATFORM" == "linux-armhf" ]]; then
+        if [[ "$CI_DEPLOY_PLATFORM" == "linux-arm" ]]; then
           export ARCH=armhf
           export PREFIX=arm-linux-gnueabihf
           export USERLAND_BUILDME="buildme"

@@ -1039,7 +1039,7 @@ EOF
         make install
         ;;
 
-    linux-armhf)
+    linux-arm)
         tar --totals -xjf ../alsa-lib-$ALSA_VERSION.tar.bz2
 
         export CFLAGS="-I$INSTALL_PATH/include -L$INSTALL_PATH/lib"
