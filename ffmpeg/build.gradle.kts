@@ -52,11 +52,9 @@ val compileNative = if (deployNative) {
 fun AbstractCopyTask.licenses() {
     from(layout.projectDirectory) {
         include("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")
-        rename { "ffmpeg-static-$it" }
     }
     from(rootProject.layout.projectDirectory) {
         include("LICENSE", "THIRDPARTY_LICENSES")
-        rename { "ffmpeg-static-$it" }
     }
 }
 
