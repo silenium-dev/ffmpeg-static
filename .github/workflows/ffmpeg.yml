@@ -13,10 +13,6 @@ env:
   CI_DEPLOY_NEED_GCC: 1
   CI_DEPLOY_MODULE: ${{ github.workflow }}
   CI_DEPLOY_PLATFORM: ${{ github.job }}
-  CI_DEPLOY_SETTINGS: ${{ secrets.CI_DEPLOY_SETTINGS }}
-  CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
-  CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
-  STAGING_REPOSITORY: ${{ secrets.STAGING_REPOSITORY }}
   REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
   REPOSILITE_PASSWORD: ${{ secrets.REPOSILITE_PASSWORD }}
   # deploy to snapshots if not a release
@@ -155,29 +151,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 11
-        uses: actions/setup-java@v4
+      - uses: ./.github/actions/deploy-kotlin
         with:
-          distribution: 'temurin'
-          java-version: '11'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
-          gradle-home-cache-cleanup: true
-          build-scan-publish: true
-          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
-          build-scan-terms-of-use-agree: "yes"
-          add-job-summary-as-pr-comment: on-failure
-      - name: Publish release
-        shell: bash
-        if: "github.event_name == 'release'"
-        run: ./gradlew build publish -Pdeploy.native=false -Pdeploy.kotlin=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache
-
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - name: Publish snapshot
-        shell: bash
-        if: "github.event_name != 'release'"
-        run: ./gradlew build publish -Pdeploy.native=false -Pdeploy.kotlin=true -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache
+          gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
