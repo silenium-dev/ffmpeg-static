@@ -50,10 +50,12 @@ val compileNative = if (deployNative) {
 } else null
 
 fun AbstractCopyTask.licenses() {
-    from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")) {
+    from(layout.projectDirectory) {
+        include("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")
         rename { "ffmpeg-static-$it" }
     }
-    from(rootProject.layout.projectDirectory.files("LICENSE", "THIRDPARTY_LICENSES")) {
+    from(rootProject.layout.projectDirectory) {
+        include("LICENSE", "THIRDPARTY_LICENSES")
         rename { "ffmpeg-static-$it" }
     }
 }
@@ -61,7 +63,8 @@ fun AbstractCopyTask.licenses() {
 val nativesJar = if (deployNative) {
     tasks.register<Jar>("nativesJar") {
         // Required for configuration cache
-        val platform = platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
+        val platform =
+            platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
 
         from(compileNative!!.get().outputs.files) {
             include("lib/*.so")
