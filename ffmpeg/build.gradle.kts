@@ -49,6 +49,15 @@ val compileNative = if (deployNative) {
     }
 } else null
 
+fun AbstractCopyTask.licenses() {
+    from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")) {
+        rename { "ffmpeg-static-$it" }
+    }
+    from(rootProject.layout.projectDirectory.files("LICENSE", "THIRDPARTY_LICENSES")) {
+        rename { "ffmpeg-static-$it" }
+    }
+}
+
 val nativesJar = if (deployNative) {
     tasks.register<Jar>("nativesJar") {
         // Required for configuration cache
@@ -63,10 +72,7 @@ val nativesJar = if (deployNative) {
             }
             into("natives/$platform/")
         }
-        from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*"))
-        from(rootProject.layout.projectDirectory.file("LICENSE")) {
-            rename { "LICENSE.ffmpeg-static" }
-        }
+        licenses()
     }
 } else null
 
@@ -78,12 +84,7 @@ val zipBuild = if (deployNative) {
             include("lib/**/*")
             include("share/**/*")
         }
-        from(layout.projectDirectory.files("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")) {
-            rename { "ffmpeg-static-$name" }
-        }
-        from(rootProject.layout.projectDirectory.files("LICENSE", "THIRDPARTY_LICENSES")) {
-            rename { "ffmpeg-static-$name" }
-        }
+        licenses()
     }
 } else null
 
