@@ -229,7 +229,7 @@ runs:
     - name: Publish release
       shell: bash
       if: "github.event_name == 'release'"
-      run: ./gradlew clean publish ${{ inputs.tests && 'check' || '' }} -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.platform=${{ github.job }} -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
+      run: ./gradlew clean publish ${{ inputs.tests == 'true' && 'check' || '-x check -x test' }} -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.platform=${{ github.job }} -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
 
     - name: Set outputs
       id: vars
@@ -238,4 +238,4 @@ runs:
     - name: Publish snapshot
       shell: bash
       if: "github.event_name != 'release'"
-      run: ./gradlew clean publish ${{ inputs.tests && 'check' || '' }} -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.platform=${{ github.job }} -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
+      run: ./gradlew clean publish ${{ inputs.tests == 'true' && 'check' || '-x check -x test' }} -Pdeploy.kotlin=false -Pdeploy.native=true -Pffmpeg.platform=${{ github.job }} -Pffmpeg.gpl=${{ matrix.gpl }} -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
