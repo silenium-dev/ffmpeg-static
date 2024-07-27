@@ -53,9 +53,6 @@ fun AbstractCopyTask.licenses() {
     from(layout.projectDirectory) {
         include("LICENSE.*", "COPYING.*", "COPYRIGHT.*", "Copyright.*")
     }
-    from(rootProject.layout.projectDirectory) {
-        include("LICENSE", "THIRDPARTY_LICENSES")
-    }
 }
 
 val nativesJar = if (deployNative) {
