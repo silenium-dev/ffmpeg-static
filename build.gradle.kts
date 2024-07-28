@@ -6,9 +6,6 @@ plugins {
     `maven-publish`
 }
 
-group = "dev.silenium.libs.ffmpeg"
-version = findProperty("deploy.version") as String? ?: "0.0.0-SNAPSHOT"
-
 repositories {
     mavenCentral()
     maven("https://reposilite.silenium.dev/releases") {
@@ -42,6 +39,10 @@ tasks.jar {
 
 allprojects {
     apply<MavenPublishPlugin>()
+    apply<BasePlugin>()
+
+    group = "dev.silenium.libs.ffmpeg"
+    version = findProperty("deploy.version") as String? ?: "0.0.0-SNAPSHOT"
 
     publishing {
         repositories {
@@ -51,7 +52,8 @@ allprojects {
                     username =
                         System.getenv("REPOSILITE_USERNAME") ?: project.findProperty("reposiliteUser") as String? ?: ""
                     password =
-                        System.getenv("REPOSILITE_PASSWORD") ?: project.findProperty("reposilitePassword") as String? ?: ""
+                        System.getenv("REPOSILITE_PASSWORD") ?: project.findProperty("reposilitePassword") as String?
+                                ?: ""
                 }
             }
         }
