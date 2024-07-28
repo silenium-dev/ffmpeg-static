@@ -24,7 +24,7 @@ val deployNative = (findProperty("deploy.native") as String?)?.toBoolean() ?: tr
 
 val withGPL: Boolean = findProperty("ffmpeg.gpl").toString().toBoolean()
 val platformExtension = "-gpl".takeIf { withGPL }.orEmpty()
-val platformString = findProperty("ffmpeg.platform")?.toString()
+val platformString = findProperty("deploy.platform")?.toString()
 val platform = platformString?.let { Platform(it, platformExtension) } ?: NativePlatform.platform(platformExtension)
 val compileDir = layout.projectDirectory.dir("cppbuild/${platform}")
 
