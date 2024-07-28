@@ -7,6 +7,9 @@ inputs:
   tests:
     description: 'Run tests'
     default: 'false'
+  publish:
+    description: 'Publish artifacts'
+    default: 'true'
 runs:
   using: composite
   steps:
@@ -30,7 +33,7 @@ runs:
     - name: Publish release
       shell: bash
       if: "github.event_name == 'release'"
-      run: ./gradlew clean publish ${{ inputs.tests == 'true' && 'check' || '-x check -x test' }} -Pdeploy.kotlin=true -Pdeploy.native=false -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
+      run: ./gradlew clean ${{ inputs.publish == 'true' && 'publish' || '' }} ${{ inputs.tests == 'true' && 'check' || '-x check -x test' }} -Pdeploy.kotlin=true -Pdeploy.native=false -Pdeploy.version=${{ github.event.release.tag_name }} --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
 
     - name: Set outputs
       id: vars
@@ -39,4 +42,4 @@ runs:
     - name: Publish snapshot
       shell: bash
       if: "github.event_name != 'release'"
-      run: ./gradlew clean publish ${{ inputs.tests == 'true' && 'check' || '-x check -x test' }} -Pdeploy.kotlin=true -Pdeploy.native=false -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
+      run: ./gradlew clean ${{ inputs.publish == 'true' && 'publish' || '' }} ${{ inputs.tests == 'true' && 'check' || '-x check -x test' }} -Pdeploy.kotlin=true -Pdeploy.native=false -Pdeploy.version=${{ steps.vars.outputs.sha_short }}-dev --console=plain --info --configure-on-demand --parallel --build-cache --configuration-cache
