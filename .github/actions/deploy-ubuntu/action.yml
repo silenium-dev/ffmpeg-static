@@ -10,6 +10,9 @@ inputs:
   publish:
     description: 'Publish the release'
     default: 'true'
+  disable-cache:
+    description: 'Disable cache'
+    default: 'false'
 runs:
   using: composite
   steps:
