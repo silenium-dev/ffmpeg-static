@@ -12,14 +12,6 @@ on:
   workflow_dispatch:
   release:
     types: [ published ]
-env:
-  CI_DEPLOY_NEED_GCC: 1
-  CI_DEPLOY_MODULE: ${{ github.workflow }}
-  CI_DEPLOY_PLATFORM: ${{ github.job }}
-  REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
-  REPOSILITE_PASSWORD: ${{ secrets.REPOSILITE_PASSWORD }}
-  # deploy to snapshots if not a release
-  REPOSILITE_URL: ${{ github.event_name == 'release' && 'https://reposilite.silenium.dev/releases' || 'https://reposilite.silenium.dev/snapshots' }}
 permissions:
   contents: write
 jobs:
@@ -59,101 +51,126 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        gpl: ["false", "true"]
+        gpl: [ "false", "true" ]
     name: linux-arm (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          snapshot-repo-url: "https://reposilite.silenium.dev/snapshots"
+          release-repo-url: "https://reposilite.silenium.dev/releases"
+          repo-username: ${{ secrets.REPOSILITE_USERNAME }}
+          repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
   linux-arm64:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        gpl: ["false", "true"]
+        gpl: [ "false", "true" ]
     name: linux-arm64 (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          snapshot-repo-url: "https://reposilite.silenium.dev/snapshots"
+          release-repo-url: "https://reposilite.silenium.dev/releases"
+          repo-username: ${{ secrets.REPOSILITE_USERNAME }}
+          repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
   linux-ppc64le:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        gpl: ["false", "true"]
+        gpl: [ "false", "true" ]
     name: linux-ppc64le (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          snapshot-repo-url: "https://reposilite.silenium.dev/snapshots"
+          release-repo-url: "https://reposilite.silenium.dev/releases"
+          repo-username: ${{ secrets.REPOSILITE_USERNAME }}
+          repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
   linux-x86:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        gpl: ["false", "true"]
+        gpl: [ "false", "true" ]
     name: linux-x86 (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          snapshot-repo-url: "https://reposilite.silenium.dev/snapshots"
+          release-repo-url: "https://reposilite.silenium.dev/releases"
+          repo-username: ${{ secrets.REPOSILITE_USERNAME }}
+          repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
   linux-x86_64:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        gpl: ["false", "true"]
+        gpl: [ "false", "true" ]
     name: linux-x86_64 (${{ matrix.gpl == 'true' && 'GPL' || 'LGPL' }})
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/deploy-ubuntu
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
-#  macosx-arm64:
-#    runs-on: macos-12
-#    strategy:
-#      matrix:
-#        gpl: ["false", "true"]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-macosx
-#  macosx-x86_64:
-#    runs-on: macos-12
-#    strategy:
-#      matrix:
-#        gpl: ["false", "true"]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-macosx
-#  windows-x86:
-#    runs-on: windows-2019
-#    strategy:
-#      matrix:
-#        gpl: ["false", "true"]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-windows
-#  windows-x86_64:
-#    runs-on: windows-2019
-#    strategy:
-#      matrix:
-#        gpl: ["false", "true"]
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/deploy-windows
-#  redeploy:
-#    needs: [android-arm, android-arm64, android-x86, android-x86_64, linux-arm, linux-arm64, linux-ppc64le, linux-x86, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86, windows-x86_64]
-#    needs: [android-arm64, android-x86_64, linux-arm64, linux-ppc64le, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86_64]
-#    runs-on: ubuntu-22.04
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./.github/actions/redeploy
+          snapshot-repo-url: "https://reposilite.silenium.dev/snapshots"
+          release-repo-url: "https://reposilite.silenium.dev/releases"
+          repo-username: ${{ secrets.REPOSILITE_USERNAME }}
+          repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
+  #  macosx-arm64:
+  #    runs-on: macos-12
+  #    strategy:
+  #      matrix:
+  #        gpl: ["false", "true"]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-macosx
+  #  macosx-x86_64:
+  #    runs-on: macos-12
+  #    strategy:
+  #      matrix:
+  #        gpl: ["false", "true"]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-macosx
+  #  windows-x86:
+  #    runs-on: windows-2019
+  #    strategy:
+  #      matrix:
+  #        gpl: ["false", "true"]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-windows
+  #  windows-x86_64:
+  #    runs-on: windows-2019
+  #    strategy:
+  #      matrix:
+  #        gpl: ["false", "true"]
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/deploy-windows
+  #  redeploy:
+  #    needs: [android-arm, android-arm64, android-x86, android-x86_64, linux-arm, linux-arm64, linux-ppc64le, linux-x86, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86, windows-x86_64]
+  #    needs: [android-arm64, android-x86_64, linux-arm64, linux-ppc64le, linux-x86_64, macosx-arm64, macosx-x86_64, windows-x86_64]
+  #    runs-on: ubuntu-22.04
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #      - uses: ./.github/actions/redeploy
   deploy-kotlin:
     name: Publish Kotlin artifacts
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/deploy-kotlin
+      - uses: silenium-dev/actions/kotlin@main
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          snapshot-repo-url: "https://reposilite.silenium.dev/snapshots"
+          release-repo-url: "https://reposilite.silenium.dev/releases"
+          repo-username: ${{ secrets.REPOSILITE_USERNAME }}
+          repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
+          tests: false
+          java-version: 11
