@@ -24,8 +24,8 @@ runs:
         gradle-cache-encryption-key: ${{ inputs.gradle-cache-encryption-key }}
         snapshot-repo-url: ${{ inputs.snapshot-repo-url }}
         release-repo-url: ${{ inputs.release-repo-url }}
-        repo-username: ${{ secrets.REPOSILITE_USERNAME }}
-        repo-password: ${{ secrets.REPOSILITE_PASSWORD }}
+        repo-username: ${{ inputs.repo-username }}
+        repo-password: ${{ inputs.repo-password }}
         tests: false
         java-version: 11
         platform: ${{ github.job }}
