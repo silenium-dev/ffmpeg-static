@@ -53,6 +53,9 @@ allprojects {
                     username = System.getenv("MAVEN_REPO_USERNAME") ?: ""
                     password = System.getenv("MAVEN_REPO_PASSWORD") ?: ""
                 }
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
             }
         }
     }
