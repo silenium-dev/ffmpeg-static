@@ -22,7 +22,7 @@ val deployKotlin = (findProperty("deploy.kotlin") as String?)?.toBoolean() ?: tr
 kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_1_8
-        languageVersion = KotlinVersion.KOTLIN_1_7
+        languageVersion = KotlinVersion.KOTLIN_1_8
     }
     jvmToolchain(8)
 }
